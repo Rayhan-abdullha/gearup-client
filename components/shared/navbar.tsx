@@ -44,12 +44,12 @@ const navigationByRole: Record<UserRole, { label: string; href: string }[]> = {
 
 export default function Navbar({ userRole = "guest" }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log(userRole);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const navItems = navigationByRole[userRole];
+  const navItems = navigationByRole[userRole.toLocaleLowerCase() as UserRole];
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-950">
