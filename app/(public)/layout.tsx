@@ -8,13 +8,15 @@ export default async function PublicGroupLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getMe();
-  const gear = await getGears({});
-  const category = await getCategory();
-  console.log(category);
+  try {
+    const user = await getMe();
+  } catch (err) {
+    console.log(err);
+  }
+
   return (
     <div>
-      <Navbar userRole={user?.data.role || "guest"} />
+      <Navbar userRole={"guest"} />
       {children}
     </div>
   );

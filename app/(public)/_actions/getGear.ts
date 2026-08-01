@@ -32,7 +32,7 @@ export const getGears = async ({
       cache: "no-cache",
       next: {
         revalidate: 60 * 60 * 6,
-        tags: ["premium-posts"],
+        tags: ["get-gear"],
       },
     },
   );

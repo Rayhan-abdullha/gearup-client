@@ -35,7 +35,9 @@ export function GearCard({
         {/* Image Container */}
         <div className="relative h-48 w-full overflow-hidden bg-background-secondary">
           <Image
-            src={image}
+            src={
+              "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=500&h=500&fit=crop"
+            }
             alt={title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
