@@ -12,11 +12,13 @@ import {
   Settings,
   LogOut,
   ChevronDown,
+  CreditCard,
+  History,
 } from "lucide-react";
 import type React from "react";
 
 interface SidebarProps {
-  userRole: "provider" | "admin";
+  userRole: "provider" | "admin" | "customer";
 }
 
 interface MenuItem {
@@ -67,8 +69,30 @@ export default function DashboardSidebar({ userRole }: SidebarProps) {
     },
   ];
 
+  const customerMenuItems: MenuItem[] = [
+    {
+      label: "Overview",
+      href: "/customer-dashboard",
+      icon: <LayoutDashboard size={20} />,
+    },
+    {
+      label: "Rental History",
+      href: "/customer-dashboard/rentals",
+      icon: <History size={20} />,
+    },
+    {
+      label: "Payment History",
+      href: "/customer-dashboard/payments",
+      icon: <CreditCard size={20} />,
+    },
+  ];
+
   const menuItems =
-    userRole === "provider" ? providerMenuItems : adminMenuItems;
+    userRole === "provider"
+      ? providerMenuItems
+      : userRole === "admin"
+        ? adminMenuItems
+        : customerMenuItems;
 
   const isActive = (href: string) => pathname === href;
 
