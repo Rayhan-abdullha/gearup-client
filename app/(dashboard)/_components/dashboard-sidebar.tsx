@@ -16,6 +16,8 @@ import {
   History,
 } from "lucide-react";
 import type React from "react";
+import logout from "@/service/logout";
+import { toast } from "sonner";
 
 interface SidebarProps {
   userRole: "provider" | "admin" | "customer";
@@ -96,6 +98,13 @@ export default function DashboardSidebar({ userRole }: SidebarProps) {
 
   const isActive = (href: string) => pathname === href;
 
+  const handleLogout = async () => {
+    toast.success("Logged out successfully!");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await logout();
+    window.location.href = "/";
+  };
+
   return (
     <>
       {/* Mobile Menu Button */}
@@ -168,7 +177,10 @@ export default function DashboardSidebar({ userRole }: SidebarProps) {
             <Settings size={20} />
             <span className="font-medium">Settings</span>
           </button>
-          <button className="mt-2 flex w-full items-center gap-3 rounded-lg px-4 py-3 text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-900/20">
+          <button
+            onClick={handleLogout}
+            className="cursor-pointer mt-2 flex w-full items-center gap-3 rounded-lg px-4 py-3 text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-900/20"
+          >
             <LogOut size={20} />
             <span className="font-medium">Logout</span>
           </button>

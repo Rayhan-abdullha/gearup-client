@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Zap } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Logo from "../Logo";
 
-type UserRole = "guest" | "customer" | "provider" | "admin";
+export type UserRole = "guest" | "customer" | "provider" | "admin";
 
 interface NavbarProps {
   userRole?: UserRole;
@@ -32,8 +32,8 @@ const navigationByRole: Record<UserRole, { label: string; href: string }[]> = {
     { label: "Home", href: "/" },
     { label: "Browse Gear", href: "/browse" },
     { label: "Add Gear", href: "/add-gear" },
-    { label: "Orders", href: "/orders" },
-    { label: "Dashboard", href: "/dashboard" },
+    { label: "Orders", href: "/provider-dashboard/orders" },
+    { label: "Dashboard", href: "/provider-dashboard" },
   ],
   admin: [
     { label: "Dashboard", href: "/admin/dashboard" },
@@ -48,7 +48,6 @@ export default function Navbar({ userRole = "guest" }: NavbarProps) {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
   const navItems = navigationByRole[userRole.toLocaleLowerCase() as UserRole];
 
   return (

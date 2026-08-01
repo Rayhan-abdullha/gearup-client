@@ -13,22 +13,9 @@ export const getGears = async ({
     params.set("searchTerm", query.searchTerm as string);
   }
 
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value || null;
-
-  if (!accessToken) {
-    return {
-      success: false,
-      message: "User not logged in!",
-    };
-  }
-
   const res = await fetch(
     `${process.env.BACKEND_API_URL}/gear?${params.toString()}`,
     {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
       next: {
         revalidate: 60 * 60 * 6,
         tags: ["get-gear"],
