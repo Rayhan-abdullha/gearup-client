@@ -6,7 +6,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const userRole = "customer" as const;
+  const userRole = "provider" as const;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">

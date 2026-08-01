@@ -1,18 +1,10 @@
 "use server";
 
+import { GearItem } from "@/lib/types";
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
-export const getGears = async ({
-  query,
-}: {
-  query?: { [key: string]: string | string[] | undefined };
-}) => {
-  const params = new URLSearchParams();
-
-  if (query && query.searchTerm) {
-    params.set("searchTerm", query.searchTerm as string);
-  }
-
+export const updateGear = async (id: string, formData: Partial<GearItem>) => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value || null;
 
@@ -24,17 +16,18 @@ export const getGears = async ({
   }
 
   const res = await fetch(
-    `${process.env.BACKEND_API_URL}/gear?${params.toString()}`,
+    `${process.env.BACKEND_API_URL}/provider/gear/${id}`,
     {
+      method: "PUT",
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       },
-      next: {
-        revalidate: 60 * 60 * 6,
-        tags: ["get-gear"],
-      },
+      body: JSON.stringify(formData),
     },
   );
+
+  revalidateTag("get-gear", "max");
 
   const result = await res.json();
   return result;
