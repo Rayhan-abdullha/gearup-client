@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Zap } from "lucide-react";
+import Logo from "../Logo";
 
 type UserRole = "guest" | "customer" | "provider" | "admin";
 
@@ -44,7 +45,6 @@ const navigationByRole: Record<UserRole, { label: string; href: string }[]> = {
 
 export default function Navbar({ userRole = "guest" }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(userRole);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -56,15 +56,7 @@ export default function Navbar({ userRole = "guest" }: NavbarProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link
-              href="/"
-              className="text-xl font-bold text-gray-900 dark:text-white"
-            >
-              GearRent
-            </Link>
-          </div>
-
+          <Logo />
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:gap-1">
             {navItems.map((item) => (
