@@ -1,12 +1,14 @@
 import Navbar from "@/components/shared/navbar";
 import DashboardSidebar from "../(dashboard)/_components/dashboard-sidebar";
+import { getMe } from "@/service/getMe";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const userRole = "provider" as const;
+  const res = await getMe();
+  const userRole = res?.data?.role || null;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">

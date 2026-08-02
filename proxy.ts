@@ -1,15 +1,16 @@
-import { cookies } from "next/headers";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { jwtUtils } from "./utils/jwt";
 import { JwtPayload } from "jsonwebtoken";
 
 const AUTH_ROUTES = ["/login", "/register"];
-const PUBLIC_ROUTES = ["/"];
+
+// how to access dynamic details page
+const PUBLIC_ROUTES = ["/", "login", "/register", "/gear"];
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  const cookieStore = await cookies();
+
   let accessToken = request.cookies.get("accessToken")?.value;
   let decodedAccessToken = accessToken
     ? jwtUtils.verifyToken(accessToken, process.env.JWT_ACCESS_SECRET as string)
@@ -53,8 +54,8 @@ export async function proxy(request: NextRequest) {
   } else if (pathname.startsWith("/admin-dashboard") && userRole !== "ADMIN") {
     return NextResponse.redirect(new URL("/not-found", request.url));
   } else if (
-    pathname.startsWith("/author-dashboard") &&
-    userRole !== "AUTHOR"
+    pathname.startsWith("/customer-dashboard") &&
+    userRole !== "CUSTOMER"
   ) {
     return NextResponse.redirect(new URL("/not-found", request.url));
   }

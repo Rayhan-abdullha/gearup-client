@@ -1,6 +1,6 @@
-"use client";
-
 import { TrendingUp, Clock, CheckCircle2, DollarSign } from "lucide-react";
+import RecentRental from "../_components/customer/recent-rental";
+import StatCard from "../_components/customer/state-card";
 
 const spendingData = [
   { month: "Jan", amount: 240 },
@@ -15,33 +15,6 @@ const rentalStats = [
   { name: "Active Rentals", value: 2, color: "#3b82f6" },
   { name: "Completed", value: 12, color: "#10b981" },
   { name: "Cancelled", value: 1, color: "#ef4444" },
-];
-
-const recentRentals = [
-  {
-    id: "ORD-001",
-    gear: "Mountain Bike Pro",
-    status: "PICKED_UP",
-    startDate: "2026-01-15",
-    endDate: "2026-01-20",
-    amount: 120,
-  },
-  {
-    id: "ORD-002",
-    gear: "Camping Tent 4P",
-    status: "RETURNED",
-    startDate: "2026-01-10",
-    endDate: "2026-01-13",
-    amount: 75,
-  },
-  {
-    id: "ORD-003",
-    gear: "Fishing Rod Set",
-    status: "CONFIRMED",
-    startDate: "2026-01-20",
-    endDate: "2026-01-25",
-    amount: 60,
-  },
 ];
 
 export default function CustomerDashboard() {
@@ -141,130 +114,7 @@ export default function CustomerDashboard() {
           </div>
         </div>
       </div>
-
-      {/* Recent Rentals */}
-      <div className="rounded-lg bg-white shadow-md dark:bg-gray-800">
-        <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            Recent Rentals
-          </h2>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700">
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                  Order ID
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                  Gear
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                  Duration
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                  Amount
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentRentals.map((rental) => (
-                <tr
-                  key={rental.id}
-                  className="border-b border-gray-200 dark:border-gray-700"
-                >
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
-                    {rental.id}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
-                    {rental.gear}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
-                    {rental.startDate} to {rental.endDate}
-                  </td>
-                  <td className="px-6 py-4 text-sm">
-                    <StatusBadge status={rental.status} />
-                  </td>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
-                    ${rental.amount}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <RecentRental />
     </div>
-  );
-}
-
-interface StatCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  trend: string;
-}
-
-function StatCard({ icon, label, value, trend }: StatCardProps) {
-  return (
-    <div className="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-            {label}
-          </p>
-          <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-            {value}
-          </p>
-          <p className="mt-2 text-xs text-gray-500 dark:text-gray-500">
-            {trend}
-          </p>
-        </div>
-        <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-700">{icon}</div>
-      </div>
-    </div>
-  );
-}
-
-interface StatusBadgeProps {
-  status: string;
-}
-
-function StatusBadge({ status }: StatusBadgeProps) {
-  const statusConfig: Record<
-    string,
-    { bg: string; text: string; label: string }
-  > = {
-    PLACED: {
-      bg: "bg-yellow-100",
-      text: "text-yellow-800",
-      label: "Awaiting Confirmation",
-    },
-    CONFIRMED: { bg: "bg-blue-100", text: "text-blue-800", label: "Confirmed" },
-    PAID: {
-      bg: "bg-purple-100",
-      text: "text-purple-800",
-      label: "Payment Received",
-    },
-    PICKED_UP: {
-      bg: "bg-green-100",
-      text: "text-green-800",
-      label: "Picked Up",
-    },
-    RETURNED: { bg: "bg-gray-100", text: "text-gray-800", label: "Returned" },
-    CANCELLED: { bg: "bg-red-100", text: "text-red-800", label: "Cancelled" },
-  };
-
-  const config = statusConfig[status] || statusConfig.PLACED;
-
-  return (
-    <span
-      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${config.bg} ${config.text}`}
-    >
-      {config.label}
-    </span>
   );
 }

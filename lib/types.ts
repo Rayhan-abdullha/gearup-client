@@ -24,3 +24,31 @@ export interface GearItem {
   updatedAt: string;
   category: Category;
 }
+
+export interface RentalOrder {
+  id: string;
+  totalAmount: number;
+  status: string;
+  paymentStatus: string;
+  transactionId: string | null;
+  customerId: string;
+  createdAt: string;
+  updatedAt: string;
+
+  items: RentalItem[];
+}
+
+export interface RentalItem {
+  id: string;
+  quantity: number;
+  priceAtRent: number;
+  startDate: string;
+  endDate: string;
+  orderId: string;
+  gearId: string;
+
+  gear: {
+    title: string;
+    brand: string;
+  };
+}

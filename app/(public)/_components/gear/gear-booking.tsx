@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { DateRangePicker } from "./date-range-picker";
+import { createOrder } from "../../_actions/create-order";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type GearBookingProps = {
   gearId: string;
@@ -16,12 +19,14 @@ export default function GearBooking({
   stock,
   isAvailable,
 }: GearBookingProps) {
+  const [pending, setPending] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [quantity, setQuantity] = useState(1);
 
+  const router = useRouter();
+
   const handleDateRangeChange = (start: string, end: string) => {
-    console.log("Selected dates:", start, end);
     setStartDate(start);
     setEndDate(end);
   };
@@ -43,31 +48,41 @@ export default function GearBooking({
 
   const totalPrice = days > 0 ? days * pricePerDay * quantity : 0;
 
-  const handleRentNow = () => {
+  const handleRentNow = async () => {
     if (!startDate || !endDate) {
-      alert("Please select rental dates");
+      toast.error("Please select a valid date range");
       return;
     }
 
     if (days <= 0) {
-      alert("End date must be after start date");
+      toast.error("End date must be after start date");
       return;
     }
-
     const bookingData = {
-      gearId,
-      startDate,
-      endDate,
-      quantity,
-      totalPrice,
+      items: [
+        {
+          gearId,
+          startDate,
+          endDate,
+          quantity,
+        },
+      ],
     };
 
-    console.log("Booking:", bookingData);
-
-    // TODO:
-    // Call your rental/payment API here
-
-    alert("Proceeding to checkout...");
+    try {
+      setPending(true);
+      const res = await createOrder(bookingData);
+      if (res.success) {
+        toast.success("Booking successful!");
+        router.push("/customer-dashboard/rentals");
+      } else {
+        toast.error(res.message || "Failed to create booking.");
+      }
+    } catch (error) {
+      toast.error("Failed to create booking.");
+    } finally {
+      setPending(false);
+    }
   };
 
   return (
@@ -145,10 +160,10 @@ export default function GearBooking({
       <button
         type="button"
         onClick={handleRentNow}
-        disabled={!isAvailable || stock <= 0}
-        className="w-full px-6 py-4 bg-primary text-white rounded-lg font-semibold hover:bg-primary-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={!isAvailable || stock <= 0 || pending}
+        className="cursor-pointer w-full px-6 py-4 bg-primary text-white rounded-lg font-semibold hover:bg-primary-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Rent Now
+        {pending ? "Processing..." : "Rent Now"}
       </button>
     </div>
   );

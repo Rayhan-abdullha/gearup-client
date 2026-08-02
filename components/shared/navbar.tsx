@@ -26,7 +26,7 @@ const navigationByRole: Record<UserRole, { label: string; href: string }[]> = {
     { label: "Browse Gear", href: "/browse" },
     { label: "Categories", href: "/categories" },
     { label: "My Orders", href: "/orders" },
-    { label: "Dashboard", href: "/dashboard" },
+    { label: "Dashboard", href: "/customer-dashboard" },
   ],
   provider: [
     { label: "Home", href: "/" },
