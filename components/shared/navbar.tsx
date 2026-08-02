@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Compass, Menu, X } from "lucide-react";
-import Logo from "../Logo";
+import { Compass, LogOut, Menu, X } from "lucide-react";
+import { Button } from "@base-ui/react";
+import { toast } from "sonner";
+import logout from "@/service/logout";
 
 export type UserRole = "guest" | "customer" | "provider" | "admin";
 
@@ -14,24 +16,18 @@ interface NavbarProps {
 const navigationByRole: Record<UserRole, { label: string; href: string }[]> = {
   guest: [
     { label: "Home", href: "/" },
-    { label: "Browse Gear", href: "/browse" },
-    { label: "Categories", href: "/categories" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
     { label: "Login", href: "/login" },
-    { label: "Register", href: "/register" },
   ],
   customer: [
     { label: "Home", href: "/" },
-    { label: "Browse Gear", href: "/browse" },
-    { label: "Categories", href: "/categories" },
-    { label: "My Orders", href: "/orders" },
+    { label: "My Orders", href: "/customer-dashboard/orders" },
     { label: "Dashboard", href: "/customer-dashboard" },
   ],
   provider: [
     { label: "Home", href: "/" },
-    { label: "Browse Gear", href: "/browse" },
-    { label: "Add Gear", href: "/add-gear" },
+    { label: "Add Gear", href: "/provider-dashboard/inventory?action=add" },
     { label: "Orders", href: "/provider-dashboard/orders" },
     { label: "Dashboard", href: "/provider-dashboard" },
   ],
@@ -49,6 +45,13 @@ export default function Navbar({ userRole = "guest" }: NavbarProps) {
     setIsOpen(!isOpen);
   };
   const navItems = navigationByRole[userRole.toLocaleLowerCase() as UserRole];
+
+  const handleLogout = async () => {
+    toast.success("Logged out successfully!");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await logout();
+    window.location.href = "/";
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-950">
@@ -80,6 +83,15 @@ export default function Navbar({ userRole = "guest" }: NavbarProps) {
                 {item.label}
               </Link>
             ))}
+            {userRole !== "guest" && (
+              <Button
+                onClick={handleLogout}
+                className="ml-4 inline-flex items-center gap-2 rounded-xl border border-red-200/80 bg-red-50/50 px-3.5 py-2 text-xs font-semibold text-red-600 backdrop-blur-sm transition-all duration-200 hover:border-red-300 hover:bg-red-100/70 hover:shadow-sm dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-400 dark:hover:border-red-800/60 dark:hover:bg-red-950/50 cursor-pointer"
+              >
+                <LogOut className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
+                <span>Logout</span>
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
