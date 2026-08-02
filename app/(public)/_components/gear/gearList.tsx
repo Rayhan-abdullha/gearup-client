@@ -1,8 +1,10 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { FilterSidebar, FilterState } from "../filter-sidebar";
 import { GearCard } from "./gear-card";
 import Header from "./Header";
+import { Category } from "@/lib/types";
+import { getGears } from "../../_actions/getGear";
 
 interface Gear {
   id: string;
@@ -24,8 +26,16 @@ interface Gear {
     slug: string;
   };
 }
-export default function GearList({ gears }: { gears: Gear[] }) {
+export default function GearList({
+  gears,
+  categories,
+}: {
+  gears: Gear[];
+  categories: Category[];
+}) {
+  const [searchGears, setSearchGears] = useState<Gear[]>(gears);
   const [searchQuery, setSearchQuery] = useState("");
+
   const [filters, setFilters] = useState<FilterState>({
     categories: [],
     brands: [],
@@ -33,51 +43,43 @@ export default function GearList({ gears }: { gears: Gear[] }) {
     availability: "all",
   });
 
-  // Get unique categories and brands
-  const categories = Array.from(new Set(gears.map((g) => g.category)));
+  const isFirstRender = useRef(true);
+
   const brands = Array.from(new Set(gears.map((g) => g.brand)));
 
-  // Filter gear based on search and filters
-  const filteredGear = useMemo(() => {
-    return gears.filter((gear) => {
-      // Search filter
-      const searchLower = searchQuery.toLowerCase();
-      const matchesSearch =
-        gear.title.toLowerCase().includes(searchLower) ||
-        gear.description.toLowerCase().includes(searchLower) ||
-        gear.brand.toLowerCase().includes(searchLower) ||
-        gear.category.name.toLowerCase().includes(searchLower);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
 
-      // Category filter
-      const matchesCategory =
-        filters.categories.length === 0 ||
-        filters.categories.includes(gear.category.slug);
+    const timer = setTimeout(async () => {
+      try {
+        const res = await getGears({
+          searchTerm: searchQuery || undefined,
+          category: filters.categories.length > 0 ? filters.categories : [],
+          brand: filters.brands.length > 0 ? filters.brands : [],
+          minPrice: filters.priceRange[0],
+          maxPrice: filters.priceRange[1],
+          isAvailable:
+            filters.availability === "all"
+              ? undefined
+              : filters.availability === "available"
+                ? true
+                : false,
+        });
 
-      // Brand filter
-      const matchesBrand =
-        filters.brands.length === 0 || filters.brands.includes(gear.brand);
+        setSearchGears(res?.data ?? []);
+      } catch (error) {
+        console.error("Failed to search gears:", error);
+      }
+    }, 500);
 
-      // Price filter
-      const matchesPrice =
-        gear.pricePerDay >= filters.priceRange[0] &&
-        gear.pricePerDay <= filters.priceRange[1];
-
-      // Availability filter
-      const matchesAvailability =
-        filters.availability === "all" ||
-        (filters.availability === "available" && gear.isAvailable) ||
-        (filters.availability === "unavailable" && !gear.isAvailable);
-
-      return (
-        matchesSearch &&
-        matchesCategory &&
-        matchesBrand &&
-        matchesPrice &&
-        matchesAvailability
-      );
-    });
+    // Cancel previous timer when search/filter changes
+    return () => {
+      clearTimeout(timer);
+    };
   }, [searchQuery, filters]);
-
   return (
     <div className="min-h-screen bg-background">
       <Header setSearchQuery={setSearchQuery} />
@@ -100,16 +102,16 @@ export default function GearList({ gears }: { gears: Gear[] }) {
               <h2 className="text-2xl font-bold text-foreground mb-2">
                 Available Gear
               </h2>
-              <p className="text-foreground-secondary">
+              {/* <p className="text-foreground-secondary">
                 {filteredGear.length}{" "}
                 {filteredGear.length === 1 ? "item" : "items"} found
-              </p>
+              </p> */}
             </div>
 
             {/* Gear Grid */}
-            {filteredGear.length > 0 ? (
+            {searchGears.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredGear.map((gear, id: number) => (
+                {searchGears.map((gear, id: number) => (
                   <GearCard
                     key={id}
                     id={gear.id}

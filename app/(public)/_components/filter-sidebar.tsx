@@ -163,9 +163,9 @@ export function FilterSidebar({
         </button>
         {expandedSections.brand && (
           <div className="space-y-2">
-            {brands.map((brand) => (
+            {brands.map((brand, id: number) => (
               <label
-                key={brand}
+                key={id}
                 className="flex items-center gap-3 cursor-pointer group"
               >
                 <input
@@ -174,7 +174,7 @@ export function FilterSidebar({
                   onChange={() => handleBrandChange(brand)}
                   className="w-4 h-4 rounded border-border cursor-pointer accent-primary"
                 />
-                <span className="text-sm text-foreground-secondary group-hover:text-foreground transition-colors">
+                <span className="text-sm capitalize text-foreground-secondary group-hover:text-foreground transition-colors">
                   {brand}
                 </span>
               </label>
