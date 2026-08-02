@@ -20,7 +20,7 @@ import logout from "@/service/logout";
 import { toast } from "sonner";
 
 interface SidebarProps {
-  userRole: "provider" | "admin" | "customer";
+  userRole: "PROVIDER" | "ADMIN" | "CUSTOMER";
 }
 
 interface MenuItem {
@@ -65,8 +65,8 @@ export default function DashboardSidebar({ userRole }: SidebarProps) {
       icon: <Package size={20} />,
     },
     {
-      label: "Reports",
-      href: "/admin-dashboard/reports",
+      label: "moderation",
+      href: "/admin-dashboard/moderation",
       icon: <ShoppingCart size={20} />,
     },
   ];
@@ -90,10 +90,10 @@ export default function DashboardSidebar({ userRole }: SidebarProps) {
   ];
 
   const menuItems =
-    userRole === "provider"
-      ? providerMenuItems
-      : userRole === "admin"
-        ? adminMenuItems
+    userRole === "ADMIN"
+      ? adminMenuItems
+      : userRole === "PROVIDER"
+        ? providerMenuItems
         : customerMenuItems;
 
   const isActive = (href: string) => pathname === href;
@@ -117,7 +117,12 @@ export default function DashboardSidebar({ userRole }: SidebarProps) {
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
         <span className="ml-3 font-bold text-gray-900 dark:text-white">
-          {userRole === "provider" ? "Provider" : "Admin"} Dashboard
+          {userRole === "PROVIDER"
+            ? "Provider"
+            : userRole === "ADMIN"
+              ? "Admin"
+              : "Customer"}{" "}
+          Dashboard
         </span>
       </div>
 

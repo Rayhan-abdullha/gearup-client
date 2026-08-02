@@ -36,10 +36,10 @@ const navigationByRole: Record<UserRole, { label: string; href: string }[]> = {
     { label: "Dashboard", href: "/provider-dashboard" },
   ],
   admin: [
-    { label: "Dashboard", href: "/admin/dashboard" },
-    { label: "Users", href: "/admin/users" },
-    { label: "Gear", href: "/admin/gear" },
-    { label: "Rentals", href: "/admin/rentals" },
+    { label: "Dashboard", href: "/admin-dashboard" },
+    { label: "Users", href: "/admin-dashboard/users" },
+    { label: "Gear", href: "/admin-dashboard/gear" },
+    { label: "Rentals", href: "/admin-dashboard/rentals" },
   ],
 };
 

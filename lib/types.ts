@@ -52,3 +52,29 @@ export interface RentalItem {
     brand: string;
   };
 }
+
+export interface UserProfile {
+  id: string;
+  phoneNumber?: string | null;
+  avatarUrl?: string | null;
+  bio?: string | null;
+  deliveryAddress?: string | null;
+  city?: string | null;
+  postalCode?: string | null;
+  shopName?: string | null;
+  shopAddress?: string | null;
+  payoutDetails?: string | null;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: "ADMIN" | "CUSTOMER" | "PROVIDER";
+  status: "ACTIVE" | "SUSPENDED";
+  createdAt: string;
+  profile?: UserProfile | null;
+}

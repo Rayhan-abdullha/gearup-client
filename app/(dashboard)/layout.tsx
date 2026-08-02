@@ -9,6 +9,7 @@ export default async function DashboardLayout({
 }) {
   const res = await getMe();
   const userRole = res?.data?.role || null;
+  console.log(userRole);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
