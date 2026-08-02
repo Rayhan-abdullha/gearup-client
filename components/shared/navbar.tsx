@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Compass, Menu, X } from "lucide-react";
 import Logo from "../Logo";
 
 export type UserRole = "guest" | "customer" | "provider" | "admin";
@@ -55,7 +55,20 @@ export default function Navbar({ userRole = "guest" }: NavbarProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Logo />
+          <div className="text-center space-y-2">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-2xl font-black text-gray-900 dark:text-white tracking-tight hover:opacity-90 transition-opacity"
+            >
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/30">
+                <Compass className="w-6 h-6" />
+              </div>
+              <span>
+                Gear
+                <span className="text-blue-600 dark:text-blue-500">Rental</span>
+              </span>
+            </Link>
+          </div>
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:gap-1">
             {navItems.map((item) => (
