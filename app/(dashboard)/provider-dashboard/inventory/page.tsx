@@ -1,5 +1,5 @@
 import { getGears } from "@/app/(public)/_actions/getGear";
-import InventoryClient from "../../_components/inventory-client";
+import InventoryClient from "../../_components/provider/inventory-client";
 import { getCategory } from "@/app/(public)/_actions/getCategory";
 
 export default async function InventoryPage() {

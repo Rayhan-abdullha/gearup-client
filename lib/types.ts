@@ -78,3 +78,11 @@ export interface User {
   createdAt: string;
   profile?: UserProfile | null;
 }
+
+export interface StatCard {
+  label: string;
+  value: string | number;
+  change?: string;
+  icon: React.ReactNode;
+  color: string;
+}

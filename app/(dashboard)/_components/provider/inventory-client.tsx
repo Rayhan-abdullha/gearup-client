@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import GearTable from "./gear-table";
-import GearModal, { Category } from "./gear-modal";
+import GearTable from "../../_components/provider/gear-table";
+import GearModal, { Category } from "../../_components/provider/gear-modal";
 import type { GearItem } from "@/lib/types";
-import { createGear } from "../_actions/createGear";
+import { createGear } from "../../_actions/createGear";
 import { toast } from "sonner";
-import { deleteGear } from "../_actions/deleteGear";
-import { updateGear } from "../_actions/updateGear";
+import { deleteGear } from "../../_actions/deleteGear";
+import { updateGear } from "../../_actions/updateGear";
 
 export default function InventoryClient({
   initialGears,
