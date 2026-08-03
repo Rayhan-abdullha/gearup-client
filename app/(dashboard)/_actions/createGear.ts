@@ -1,7 +1,7 @@
 "use server";
 
 import { GearItem } from "@/lib/types";
-import { revalidateTag } from "next/cache";
+import { revalidateTag, updateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const createGear = async (formData: Partial<GearItem>) => {
@@ -24,7 +24,8 @@ export const createGear = async (formData: Partial<GearItem>) => {
     body: JSON.stringify(formData),
   });
 
-  revalidateTag("get-gear", "max");
+  updateTag("get-gear");
+
   const result = await res.json();
   return result;
 };

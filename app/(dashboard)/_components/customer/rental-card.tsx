@@ -18,6 +18,7 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isCreatePayment, setIsCreatePayment] = useState(false);
   const [isUpdateOrderStatus, setIsUpdateOrderStatusLoading] = useState(false);
+  const [orderStatus, setOrderStatus] = useState(order.status);
 
   const firstItem = order.items?.[0];
 
@@ -33,7 +34,7 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
     });
   };
 
-  const statusClass = getStatusConfig(order.status);
+  const statusClass = getStatusConfig(orderStatus);
 
   const handlePayment = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -41,7 +42,6 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
       setIsCreatePayment(true);
       await createPayment({ orderId: order.id });
     } catch (err) {
-      toast.error("Failed to create payment.");
     } finally {
       setIsCreatePayment(false);
     }
@@ -57,9 +57,11 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
       const res = await updateOrderStatusByCustomer(order.id, status);
       if (res.success && status === "RETURNED") {
         toast.success("Order returned successfully.");
+        setOrderStatus("RETURNED");
         onReview();
       } else if (res.success && status === "CANCELLED") {
         toast.success("Order cancelled successfully.");
+        setOrderStatus("CANCELLED");
       } else {
         toast.error(res.message || "Failed to update order.");
       }
@@ -101,7 +103,10 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
             <span
               className={`rounded-full px-3 py-1 text-xs font-semibold ${statusClass.bg} ${statusClass.text}`}
             >
-              {statusClass.icon} {statusClass.label}
+              {statusClass.icon}{" "}
+              {orderStatus === "PLACED"
+                ? "Awaiting Confirmation"
+                : statusClass.label}
             </span>
           </div>
         </div>
@@ -222,7 +227,7 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
 
           {/* Actions */}
           <div className="mt-6 flex flex-wrap gap-3">
-            {order.status === "PENDING" && (
+            {orderStatus === "PENDING" && (
               <button
                 onClick={handlePayment}
                 className="cursor-pointer rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
@@ -231,7 +236,7 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
               </button>
             )}
 
-            {order.status === "PICKED_UP" && (
+            {orderStatus === "PICKED_UP" && (
               <button
                 onClick={(e) => handleOrderStatus(e, "RETURNED")}
                 className="cursor-pointer flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-700"
@@ -243,7 +248,7 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
               </button>
             )}
 
-            {order.status === "RETURNED" && order.review === null && (
+            {orderStatus === "RETURNED" && order.review === null && (
               <button
                 onClick={handleReview}
                 className="cursor-pointer flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
@@ -253,7 +258,7 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
               </button>
             )}
 
-            {order.status === "CONFIRMED" && (
+            {orderStatus === "CONFIRMED" && (
               <button
                 onClick={handlePayment}
                 className="cursor-pointer flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-700"
@@ -263,7 +268,7 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
               </button>
             )}
 
-            {order.status === "PLACED" && (
+            {orderStatus === "PLACED" && (
               <button
                 onClick={(e) => handleOrderStatus(e, "CANCELLED")}
                 className="cursor-pointer flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
@@ -275,7 +280,7 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
           </div>
 
           {/* show reivew */}
-          {order.review && order.status === "RETURNED" && (
+          {order.review && orderStatus === "RETURNED" && (
             <OrderReview review={order.review} />
           )}
         </div>

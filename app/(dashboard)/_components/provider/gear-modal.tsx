@@ -56,7 +56,6 @@ export default function GearModal({
         categoryId: initialData.categoryId || "",
       });
 
-      // Convert specifications object to array of key-value pairs
       if (initialData.specifications) {
         const specArray = Object.entries(initialData.specifications).map(
           ([key, value]) => ({ key, value: String(value) }),
@@ -98,7 +97,6 @@ export default function GearModal({
     }));
   };
 
-  // Handle Dynamic Specification Key-Value Pairs
   const handleSpecChange = (
     index: number,
     field: "key" | "value",
@@ -120,7 +118,6 @@ export default function GearModal({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Convert specs array back to an object format: { length: "10.6 ft", material: "PVC" }
     const specificationsObj: Record<string, string> = {};
     specs.forEach((item) => {
       if (item.key.trim()) {
@@ -132,10 +129,8 @@ export default function GearModal({
       ...formData,
       specifications: specificationsObj,
     };
-    console.log(payload);
 
     onSubmit(payload);
-    onClose();
   };
 
   return (
@@ -335,13 +330,13 @@ export default function GearModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-lg border-2 border-gray-300 px-4 py-2 font-semibold text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+              className="cursor-pointer flex-1 rounded-lg border-2 border-gray-300 px-4 py-2 font-semibold text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition-colors hover:bg-blue-700"
+              className="cursor-pointer flex-1 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition-colors hover:bg-blue-700"
             >
               {initialData ? "Update Gear" : "Add Gear"}
             </button>

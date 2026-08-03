@@ -91,13 +91,13 @@ export default function GearTable({ gears, onEdit, onDelete }: GearTableProps) {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => onEdit(gear)}
-                      className="rounded-lg bg-blue-100 p-2 text-blue-600 transition-colors hover:bg-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40"
+                      className="cursor-pointer rounded-lg bg-blue-100 p-2 text-blue-600 transition-colors hover:bg-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/40"
                     >
                       <Edit2 size={16} />
                     </button>
                     <button
                       onClick={() => onDelete(gear.id)}
-                      className="rounded-lg bg-red-100 p-2 text-red-600 transition-colors hover:bg-red-200 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40"
+                      className="cursor-pointer rounded-lg bg-red-100 p-2 text-red-600 transition-colors hover:bg-red-200 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40"
                     >
                       <Trash2 size={16} />
                     </button>

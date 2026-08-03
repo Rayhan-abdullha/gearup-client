@@ -22,10 +22,8 @@ export default function RentalHistory({ rentals }: RentalHistoryProps) {
       return ["PLACED", "CONFIRMED", "PAID", "PICKED_UP"].includes(
         order.status,
       );
-    }
-
-    if (selectedFilter === "COMPLETED") {
-      return ["RETURNED", "CANCELLED"].includes(order.status);
+    } else if (selectedFilter === "COMPLETED") {
+      return ["RETURNED"].includes(order.status);
     }
 
     return true;

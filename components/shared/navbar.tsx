@@ -40,7 +40,6 @@ const navigationByRole: Record<UserRole, { label: string; href: string }[]> = {
 };
 
 export default function Navbar({ userRole = "guest" }: NavbarProps) {
-  console.log(userRole);
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -51,7 +50,7 @@ export default function Navbar({ userRole = "guest" }: NavbarProps) {
     toast.success("Logged out successfully!");
     await new Promise((resolve) => setTimeout(resolve, 1000));
     await logout();
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   return (

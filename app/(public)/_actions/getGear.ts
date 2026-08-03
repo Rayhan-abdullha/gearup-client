@@ -42,7 +42,10 @@ export const getGears = async (query: SearchQuery) => {
   const res = await fetch(
     `${process.env.BACKEND_API_URL}/gear?${params.toString()}`,
     {
-      cache: "no-store",
+      next: {
+        revalidate: 60 * 60 * 5,
+        tags: ["get-gear"],
+      },
     },
   );
 

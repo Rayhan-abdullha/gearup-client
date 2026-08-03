@@ -47,8 +47,12 @@ export default async function PlatformHealthDashboard() {
   const totalRentalsCount = rentalsList.length;
 
   const totalRevenue = rentalsList.reduce(
-    (acc: number, order: { totalAmount?: number }) =>
-      acc + (order.totalAmount || 0),
+    (acc: number, order: { totalAmount: number; status?: string }) => {
+      if (order.status === "RETURNED") {
+        return acc + order.totalAmount;
+      }
+      return acc;
+    },
     0,
   );
 

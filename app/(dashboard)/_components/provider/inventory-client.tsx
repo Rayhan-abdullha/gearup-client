@@ -57,6 +57,7 @@ export default function InventoryClient({
         if (result.success) {
           toast.success("Gear created successfully!");
           handleCloseModal();
+          setGearList((prev) => [...prev, result.data]);
         } else {
           toast.error(result.message || "Failed to create gear.");
         }
@@ -104,7 +105,7 @@ export default function InventoryClient({
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition-colors hover:bg-blue-700"
+          className="cursor-pointer flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition-colors hover:bg-blue-700"
         >
           <Plus size={20} />
           Add Gear
