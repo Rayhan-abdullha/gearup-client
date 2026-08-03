@@ -167,11 +167,6 @@ export default function DashboardSidebar({ userRole }: SidebarProps) {
                 {item.icon}
                 <span className="font-medium">{item.label}</span>
               </div>
-              {item.badge && (
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
-                  {item.badge}
-                </span>
-              )}
             </Link>
           ))}
         </nav>

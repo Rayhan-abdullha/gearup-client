@@ -5,7 +5,7 @@ import { jwtUtils } from "./utils/jwt";
 import { JwtPayload } from "jsonwebtoken";
 
 const AUTH_ROUTES = ["/login", "/register"];
-const PUBLIC_ROUTES = ["/", "/login", "/register", "gear"];
+const PUBLIC_ROUTES = ["/", "/login", "/register", "/gear"];
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
