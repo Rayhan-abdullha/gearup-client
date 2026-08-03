@@ -1,3 +1,5 @@
+import { OrderStatus } from "../_components/_types/provider-types";
+
 const getStatusConfig = (status: string) => {
   const config: Record<
     string,
@@ -85,9 +87,29 @@ const getStatusLabel = (status: string) => {
   );
 };
 
+const getProviderStatusColor = (status: OrderStatus) => {
+  switch (status) {
+    case "PLACED":
+      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200";
+    case "CONFIRMED":
+      return "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200";
+    case "PAID":
+      return "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200";
+    case "PICKED_UP":
+      return "bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200";
+    case "RETURNED":
+      return "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200";
+    case "CANCELLED":
+      return "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200";
+    default:
+      return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
+  }
+};
+
 export {
   getStatusConfig,
   getPymentSatusConfig,
   getStatusColor,
   getStatusLabel,
+  getProviderStatusColor,
 };

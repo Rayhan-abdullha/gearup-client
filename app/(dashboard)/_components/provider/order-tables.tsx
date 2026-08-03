@@ -11,6 +11,9 @@ import {
 
 import React from "react";
 import { Order, OrderStatus } from "../_types/provider-types";
+import { getProviderStatusColor } from "../../_config/getConfig";
+import { updaeOrderByProvider } from "../../_actions/updateOrderByProvider";
+import { toast } from "sonner";
 
 interface OrdersTableProps {
   orders: Order[];
@@ -38,25 +41,6 @@ export function OrdersTable({
   onStatusUpdate,
   formatStatusLabel,
 }: OrdersTableProps) {
-  const getStatusColor = (status: OrderStatus) => {
-    switch (status) {
-      case "PLACED":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200";
-      case "CONFIRMED":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200";
-      case "PAID":
-        return "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200";
-      case "PICKED_UP":
-        return "bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200";
-      case "RETURNED":
-        return "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200";
-      case "CANCELLED":
-        return "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200";
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
-    }
-  };
-
   const getStatusIcon = (status: OrderStatus) => {
     switch (status) {
       case "PLACED":
@@ -78,6 +62,24 @@ export function OrdersTable({
   const formatDate = (isoString: string) => {
     if (!isoString) return "N/A";
     return new Date(isoString).toISOString().split("T")[0];
+  };
+
+  const handleUpdateOrder = async (
+    orderId: string,
+    newStatus: "CONFIRMED" | "CANCELLED" | "PICKED_UP",
+  ) => {
+    try {
+      const res = await updaeOrderByProvider(orderId, newStatus);
+      if (res.success) {
+        setShowActionMenu(null);
+        onStatusUpdate(orderId, newStatus);
+        toast.success("Order updated successfully.");
+      } else {
+        toast.error(res.message || "Failed to update order.");
+      }
+    } catch (error) {
+      toast.error("Failed to update order.");
+    }
   };
 
   return (
@@ -169,7 +171,7 @@ export function OrdersTable({
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${getProviderStatusColor(
                           order.status,
                         )}`}
                       >
@@ -201,27 +203,36 @@ export function OrdersTable({
                             >
                               View Details
                             </button>
-                            {nextStep && (
+                            {order.status === "PLACED" && (
                               <button
                                 onClick={() =>
-                                  onStatusUpdate(order.id, nextStep)
+                                  handleUpdateOrder(order.id, "CONFIRMED")
                                 }
                                 className="w-full border-t border-gray-200 px-4 py-2 text-left text-sm text-blue-600 hover:bg-gray-100 dark:border-gray-700 dark:text-blue-400 dark:hover:bg-gray-700"
                               >
-                                Mark as {formatStatusLabel(nextStep)}
+                                Mark as Confirmed
                               </button>
                             )}
-                            {order.status !== "CANCELLED" &&
-                              order.status !== "RETURNED" && (
-                                <button
-                                  onClick={() =>
-                                    onStatusUpdate(order.id, "CANCELLED")
-                                  }
-                                  className="w-full border-t border-gray-200 px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 dark:border-gray-700 dark:text-red-400 dark:hover:bg-gray-700"
-                                >
-                                  Cancel Order
-                                </button>
-                              )}
+                            {order.status === "PAID" && (
+                              <button
+                                onClick={() =>
+                                  handleUpdateOrder(order.id, "PICKED_UP")
+                                }
+                                className="w-full border-t border-gray-200 px-4 py-2 text-left text-sm text-blue-600 hover:bg-gray-100 dark:border-gray-700 dark:text-blue-400 dark:hover:bg-gray-700"
+                              >
+                                Mark as Pickup
+                              </button>
+                            )}
+                            {order.status === "PLACED" && (
+                              <button
+                                onClick={() =>
+                                  handleUpdateOrder(order.id, "CANCELLED")
+                                }
+                                className="w-full border-t border-gray-200 px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 dark:border-gray-700 dark:text-red-400 dark:hover:bg-gray-700"
+                              >
+                                Cancel Order
+                              </button>
+                            )}
                           </div>
                         )}
                       </div>
