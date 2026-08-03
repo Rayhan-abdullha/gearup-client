@@ -242,9 +242,7 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
                 className="cursor-pointer flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-700"
               >
                 <MessageCircle size={16} />
-                {isUpdateOrderStatus
-                  ? "Updating Status..."
-                  : "Return and Review"}
+                {isUpdateOrderStatus ? "Updating Status..." : "Return"}
               </button>
             )}
 

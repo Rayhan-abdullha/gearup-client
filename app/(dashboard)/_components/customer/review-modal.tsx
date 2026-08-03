@@ -24,7 +24,6 @@ export function ReviewModal({ order, onClose }: ReviewModalProps) {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
 
-  // wrap submitReviewActions to match useActionState expected signature (state, payload)
   const wrappedSubmit = (s: ReviewState, formData: FormData) =>
     submitReviewActions(s, formData, order.items[0].gearId, order.id);
 
