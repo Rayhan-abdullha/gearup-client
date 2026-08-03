@@ -4,7 +4,6 @@ import { getPaymentsMe } from "../../_actions/get-payment-history";
 
 const page = async () => {
   const payments = await getPaymentsMe();
-  console.log(payments);
   return (
     <Suspense>
       <PaymentHistoryPage payments={payments?.data} />

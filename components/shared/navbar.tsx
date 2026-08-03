@@ -40,6 +40,7 @@ const navigationByRole: Record<UserRole, { label: string; href: string }[]> = {
 };
 
 export default function Navbar({ userRole = "guest" }: NavbarProps) {
+  console.log(userRole);
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => {
     setIsOpen(!isOpen);

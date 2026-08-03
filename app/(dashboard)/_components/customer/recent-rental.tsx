@@ -32,7 +32,7 @@ const RecentRental = async () => {
             </tr>
           </thead>
           <tbody>
-            {res.data.map((rental: RentalOrder) => {
+            {res?.data?.rentals.map((rental: RentalOrder) => {
               const startDate = new Date(rental.items[0].startDate);
               const endDate = new Date(rental.items[0].endDate);
 
