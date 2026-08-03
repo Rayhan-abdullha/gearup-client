@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏕️ GearUp - Sports & Outdoor Gear Rental Platform
 
-## Getting Started
+**GearUp** is a modern, full-stack web application that connects outdoor enthusiasts with sports and equipment rental providers. Rent camping gear, sports equipment, and outdoor adventure tools with just a few clicks.
 
-First, run the development server:
+![GearUp Site Preview](https://gearup-client-lovat.vercel.app/login)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### - Git Repository Clone
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+https://github.com/Rayhan-abdullha/gearup-client
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- cd gearup
+- npm install
+- npm run dev
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Features
 
-## Learn More
+### 👤 Customer Experience
 
-To learn more about Next.js, take a look at the following resources:
+- 🔍 **Smart Search & Filters** - Find gear by category, price range, brand, and availability dates
+- 📅 **Interactive Booking** - Real-time availability calendar with date picker
+- 🛒 **Seamless Checkout** - Stripe/SSLCommerz payment integration
+- 📊 **Personal Dashboard** - Track orders, payment history, and leave reviews
+- 🔔 **Real-time Updates** - Toast notifications for all actions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🏪 Provider Tools
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 📦 **Inventory Management** - Add, edit, and remove gear listings with image upload
+- 📋 **Order Management** - View and update order statuses (Confirm → Picked Up → Returned)
+- 📈 **Dashboard Analytics** - Overview of total gear, active rentals, and pending orders
+- ⚡ **Optimistic Updates** - Instant UI feedback without page reloads
 
-## Deploy on Vercel
+### 🛡️ Admin Controls
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 👥 **User Management** - View all users with suspend/activate actions
+- 📊 **Platform Analytics** - Global statistics and platform health metrics
+- 🔍 **Content Moderation** - Inspect all gear listings and rental orders
+- 🎯 **Role-Based Access** - Secure route protection with Next.js Middleware
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Tech Stack
+
+| Category               | Technologies                           |
+| ---------------------- | -------------------------------------- |
+| **Frontend**           | Next.js 16, TypeScript                 |
+| **Styling**            | Tailwind CSS, Framer Motion, shadcn/ui |
+| **Forms & Validation** | React Hook Form, Zod                   |
+| **Authentication**     | NextAuth.js (JWT)                      |
+| **Payments**           | Stripe / SSLCommerz                    |
+| **Date Handling**      | date-fns, react-day-picker             |
+| **Icons**              | Lucide React                           |
