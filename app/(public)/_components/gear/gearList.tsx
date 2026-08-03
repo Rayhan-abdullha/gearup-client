@@ -5,6 +5,7 @@ import { GearCard } from "./gear-card";
 import Header from "./Header";
 import { Category } from "@/lib/types";
 import { getGears } from "../../_actions/getGear";
+import { SlidersHorizontal } from "lucide-react";
 
 interface Gear {
   id: string;
@@ -26,6 +27,7 @@ interface Gear {
     slug: string;
   };
 }
+
 export default function GearList({
   gears,
   categories,
@@ -35,6 +37,7 @@ export default function GearList({
 }) {
   const [searchGears, setSearchGears] = useState<Gear[]>(gears);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   const [filters, setFilters] = useState<FilterState>({
     categories: [],
@@ -79,6 +82,7 @@ export default function GearList({
       clearTimeout(timer);
     };
   }, [searchQuery, filters]);
+
   return (
     <div className="min-h-screen bg-background">
       <Header setSearchQuery={setSearchQuery} />
@@ -91,14 +95,25 @@ export default function GearList({
               categories={categories.map((c) => c.name)}
               brands={brands}
               onFilterChange={setFilters}
+              isOpen={isMobileFilterOpen}
+              onClose={() => setIsMobileFilterOpen(false)}
             />
           </div>
 
           <div className="flex-1">
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-foreground mb-2">
+            <div className="mb-8 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-foreground">
                 Available Gear
               </h2>
+
+              {/* Mobile Filter Toggle Button */}
+              <button
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="cursor-pointer lg:hidden flex items-center gap-2 px-4 py-2 bg-background-secondary border border-border rounded-lg text-sm font-medium text-foreground hover:bg-border/20 transition-colors"
+              >
+                <SlidersHorizontal size={16} />
+                Filters
+              </button>
             </div>
 
             {/* Gear Grid */}

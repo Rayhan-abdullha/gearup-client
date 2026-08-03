@@ -14,10 +14,6 @@ export default async function CustomerDashboard() {
   return (
     <Suspense fallback={<DashboardSkeleton />}>
       <div>
-        <h1 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">
-          Welcome back, Sarah!
-        </h1>
-
         {/* Stats Cards */}
         <div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard

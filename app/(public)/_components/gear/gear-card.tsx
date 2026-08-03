@@ -29,6 +29,7 @@ export function GearCard({
   stock,
   rating = 4.5,
 }: GearCardProps) {
+  const image = images?.length ? images[0] : undefined;
   return (
     <Link href={`/gear/${id}`}>
       <div className="group cursor-pointer rounded-lg border border-border bg-background overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
@@ -36,7 +37,7 @@ export function GearCard({
         <div className="relative h-48 w-full overflow-hidden bg-background-secondary">
           <Image
             src={
-              (images[0] as string) ||
+              image ||
               "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=500&h=500&fit=crop"
             }
             alt={title}

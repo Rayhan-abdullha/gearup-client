@@ -39,13 +39,11 @@ export const getGears = async (query: SearchQuery) => {
   if (query.isAvailable !== undefined) {
     params.set("isAvailable", String(query.isAvailable));
   }
+
   const res = await fetch(
     `${process.env.BACKEND_API_URL}/gear?${params.toString()}`,
     {
-      next: {
-        revalidate: 60 * 60 * 5,
-        tags: ["get-gear"],
-      },
+      cache: "no-store",
     },
   );
 

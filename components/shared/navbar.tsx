@@ -34,8 +34,7 @@ const navigationByRole: Record<UserRole, { label: string; href: string }[]> = {
   admin: [
     { label: "Dashboard", href: "/admin-dashboard" },
     { label: "Users", href: "/admin-dashboard/users" },
-    { label: "Gear", href: "/admin-dashboard/gear" },
-    { label: "Rentals", href: "/admin-dashboard/rentals" },
+    { label: "Rentals", href: "/admin-dashboard/moderation" },
   ],
 };
 
@@ -104,9 +103,9 @@ export default function Navbar({ userRole = "guest" }: NavbarProps) {
             >
               <span className="sr-only">Open main menu</span>
               {isOpen ? (
-                <X className="block h-6 w-6" />
+                <X className="cursor-pointer block h-6 w-6" />
               ) : (
-                <Menu className="block h-6 w-6" />
+                <Menu className="cursor-pointer block h-6 w-6" />
               )}
             </button>
           </div>
@@ -127,6 +126,15 @@ export default function Navbar({ userRole = "guest" }: NavbarProps) {
                 {item.label}
               </Link>
             ))}
+            {userRole !== "guest" && (
+              <Button
+                onClick={handleLogout}
+                className="cursor-pointer inline-flex items-center gap-2 rounded-xl border border-red-200/80 bg-red-50/50 px-3.5 py-2 text-xs font-semibold text-red-600 backdrop-blur-sm transition-all duration-200 hover:border-red-300 hover:bg-red-100/70 hover:shadow-sm dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-400 dark:hover:border-red-800/60 dark:hover:bg-red-950/50 cursor-pointer"
+              >
+                <LogOut className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
+                <span>Logout</span>
+              </Button>
+            )}
           </div>
         </div>
       )}
