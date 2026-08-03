@@ -17,7 +17,7 @@ interface Gear {
   pricePerDay: number;
   stock: number;
   isAvailable: boolean;
-  image: string;
+  images: string[];
   rating?: number;
   providerId: string;
   categoryId: string;
@@ -75,7 +75,6 @@ export default function GearList({
       }
     }, 500);
 
-    // Cancel previous timer when search/filter changes
     return () => {
       clearTimeout(timer);
     };
@@ -95,17 +94,11 @@ export default function GearList({
             />
           </div>
 
-          {/* Grid */}
           <div className="flex-1">
-            {/* Results Header */}
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-foreground mb-2">
                 Available Gear
               </h2>
-              {/* <p className="text-foreground-secondary">
-                {filteredGear.length}{" "}
-                {filteredGear.length === 1 ? "item" : "items"} found
-              </p> */}
             </div>
 
             {/* Gear Grid */}
@@ -117,7 +110,7 @@ export default function GearList({
                     id={gear.id}
                     title={gear.title}
                     description={gear.description}
-                    image={gear.image}
+                    images={gear.images}
                     pricePerDay={gear.pricePerDay}
                     category={gear.category.name}
                     brand={gear.brand}

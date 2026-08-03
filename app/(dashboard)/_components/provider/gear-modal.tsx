@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, Plus, Trash2 } from "lucide-react";
 import type { GearItem } from "@/lib/types";
+import ImageInputs from "./image-input";
 
 export interface Category {
   id: string;
@@ -38,7 +39,9 @@ export default function GearModal({
     stock: 0,
     isAvailable: true,
     description: "",
+    specifications: {},
     categoryId: "",
+    images: [],
   });
 
   // Local state to manage dynamic key-value specifications
@@ -113,6 +116,10 @@ export default function GearModal({
 
   const handleRemoveSpec = (index: number) => {
     setSpecs((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleImageInput = (images: string[]) => {
+    setFormData((prev) => ({ ...prev, images }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -243,6 +250,12 @@ export default function GearModal({
               />
             </div>
           </div>
+
+          {/* Image */}
+          <ImageInputs
+            value={formData.images || []}
+            onChange={handleImageInput}
+          />
 
           {/* Description */}
           <div>

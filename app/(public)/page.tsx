@@ -6,7 +6,6 @@ import { getCategory } from "./_actions/getCategory";
 
 const Home = async () => {
   const gears = await getGears({});
-  console.log(gears);
   const categories = await getCategory();
   return (
     <Suspense fallback={<GearListSkeleton />}>

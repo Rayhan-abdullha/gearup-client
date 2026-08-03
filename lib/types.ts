@@ -15,6 +15,7 @@ export interface GearItem {
   specifications: {
     [key: string]: string;
   };
+  images?: string[];
   pricePerDay: number;
   stock: number;
   isAvailable: boolean;

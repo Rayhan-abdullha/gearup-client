@@ -8,20 +8,20 @@ interface GearCardProps {
   id: string;
   title: string;
   description: string;
-  image: string;
   pricePerDay: number;
   category: string;
   brand: string;
   isAvailable: boolean;
   stock: number;
   rating?: number;
+  images: string[];
 }
 
 export function GearCard({
   id,
   title,
   description,
-  image,
+  images,
   pricePerDay,
   category,
   brand,
@@ -36,6 +36,7 @@ export function GearCard({
         <div className="relative h-48 w-full overflow-hidden bg-background-secondary">
           <Image
             src={
+              (images[0] as string) ||
               "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=500&h=500&fit=crop"
             }
             alt={title}
