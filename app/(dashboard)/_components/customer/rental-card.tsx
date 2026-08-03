@@ -6,6 +6,8 @@ import { RentalOrder } from "@/lib/types";
 import { getStatusConfig } from "../../_config/getConfig";
 import { createPayment } from "../../_actions/create-payment";
 import { toast } from "sonner";
+import { updateOrderStatusByCustomer } from "../../_actions/updateOrderStatusByCustomer";
+import { OrderReview } from "./review-customer";
 
 interface RentalCardProps {
   order: RentalOrder;
@@ -15,6 +17,7 @@ interface RentalCardProps {
 export function RentalCard({ order, onReview }: RentalCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isCreatePayment, setIsCreatePayment] = useState(false);
+  const [isUpdateOrderStatus, setIsUpdateOrderStatusLoading] = useState(false);
 
   const firstItem = order.items?.[0];
 
@@ -38,12 +41,40 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
       setIsCreatePayment(true);
       await createPayment({ orderId: order.id });
     } catch (err) {
-      console.log(err);
       toast.error("Failed to create payment.");
     } finally {
       setIsCreatePayment(false);
     }
   };
+
+  const handleOrderStatus = async (
+    e: React.MouseEvent,
+    status: "RETURNED" | "CANCELLED",
+  ) => {
+    e.stopPropagation();
+    try {
+      setIsUpdateOrderStatusLoading(true);
+      const res = await updateOrderStatusByCustomer(order.id, status);
+      if (res.success && status === "RETURNED") {
+        toast.success("Order returned successfully.");
+        onReview();
+      } else if (res.success && status === "CANCELLED") {
+        toast.success("Order cancelled successfully.");
+      } else {
+        toast.error(res.message || "Failed to update order.");
+      }
+    } catch (err) {
+      toast.error("Failed to cancel order.");
+    } finally {
+      setIsUpdateOrderStatusLoading(false);
+    }
+  };
+
+  const handleReview = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onReview();
+  };
+
   return (
     <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
       {/* Header */}
@@ -200,26 +231,53 @@ export function RentalCard({ order, onReview }: RentalCardProps) {
               </button>
             )}
 
-            {order.status === "RETURNED" && (
+            {order.status === "PICKED_UP" && (
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onReview();
-                }}
-                className="flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-700"
+                onClick={(e) => handleOrderStatus(e, "RETURNED")}
+                className="cursor-pointer flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-700"
               >
                 <MessageCircle size={16} />
-                Leave Review
+                {isUpdateOrderStatus
+                  ? "Updating Status..."
+                  : "Return and Review"}
               </button>
             )}
 
-            <button
-              onClick={(e) => e.stopPropagation()}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
-            >
-              View Details
-            </button>
+            {order.status === "RETURNED" && order.review === null && (
+              <button
+                onClick={handleReview}
+                className="cursor-pointer flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+              >
+                <MessageCircle size={16} />
+                {isUpdateOrderStatus ? "Reviewing..." : "Leave a Review"}
+              </button>
+            )}
+
+            {order.status === "CONFIRMED" && (
+              <button
+                onClick={handlePayment}
+                className="cursor-pointer flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-700"
+              >
+                <MessageCircle size={16} />
+                {isCreatePayment ? "Creating Payment..." : "Pay Now"}
+              </button>
+            )}
+
+            {order.status === "PLACED" && (
+              <button
+                onClick={(e) => handleOrderStatus(e, "CANCELLED")}
+                className="cursor-pointer flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
+              >
+                <MessageCircle size={16} />
+                {isUpdateOrderStatus ? "Cancelling..." : "Cancell Order"}
+              </button>
+            )}
           </div>
+
+          {/* show reivew */}
+          {order.review && order.status === "RETURNED" && (
+            <OrderReview review={order.review} />
+          )}
         </div>
       )}
     </div>

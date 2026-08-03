@@ -29,6 +29,11 @@ export interface RentalOrder {
   id: string;
   totalAmount: number;
   status: string;
+  review: {
+    id: string;
+    rating: number;
+    comment: string;
+  } | null;
   paymentStatus: string;
   transactionId: string | null;
   customerId: string;

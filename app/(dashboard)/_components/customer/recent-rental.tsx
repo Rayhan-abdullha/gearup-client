@@ -57,7 +57,7 @@ const RecentRental = async () => {
                     {rentalDuration}
                   </td>
                   <td className="px-6 py-4 text-sm">
-                    <StatusBadge status={rental.paymentStatus} />
+                    <StatusBadge status={rental.status} />
                   </td>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
                     ${rental.totalAmount}
